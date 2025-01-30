@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Sadman</title>
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+        .page {
+            display: none;
+            height: 100vh;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .page.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Page 1 Styles */
+        .page1 {
+            background: linear-gradient(135deg, #232526, #414345);
+
+        }
+        .gift-box {
+            width: 150px;
+            height: 150px;
+            background: #ff5e78;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 20px;
+            text-align: center;
+            cursor: pointer;
+            animation: breathing 2s infinite;
+            box-shadow: 0 0 20px rgba(255, 94, 120, 0.6);
+        }
+        @keyframes breathing {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Page 2 Styles */
+        .page2 {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+
+        }
+        h1 {
+            font-size: 36px;
+            color: #ff5e78;
+            margin: 0;
+            animation: fadeIn 3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .message {
+            margin-top: 20px;
+            color: #C0C0C0;
+            font-size: 18px;
+            line-height: 1.5;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        /* Falling Hearts / Objects */
+        .falling-object {
+            position: absolute;
+            top: -50px;
+            animation: fall 3s linear infinite;
+            font-size: 30px;
+            color: #ff5e78;
+            z-index: 999;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-50px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Pop Effect on Touch */
+        .pop-object {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            font-size: 30px;
+            color: #ff5e78;
+            animation: pop 0.5s ease-out;
+            z-index: 1000;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page 1: Landing Page -->
+    <div class="page page1 active" id="page1">
+        <div class="gift-box" id="giftBox">Smash Me</div>
+    </div>
+
+    <!-- Page 2: Birthday Message -->
+    <div class="page page2" id="page2">
+        <h1>Happy Birthday,Sadman!🔥</h1>
+        <div class="message">
+            Dear Brother,<br>
+            Another year of running the streets, breaking rules, and making legends out of ourselves.<br>
+            If life’s a crime, then we, (I, Sadek and you,) are the masterminds. <br>
+            Here’s to another year of unstoppable power of 3 of us. Stay fierce, stay ruthless, and let’s own this world together. 🚬🔫💀<br>
+            <br> ---<br>--<br>-<br>
+            Made with blood in hand <br>by <br>
+            Abdullah Al Mahdi <br>☠️☠️
+        </div>
+    </div>
+
+    <script>
+        const giftBox = document.getElementById('giftBox');
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        let heartsFalling = false;  // Flag to control falling hearts
+
+        // Audio setup
+        const audio = new Audio('Audio.mp3'); // Replace with your music file URL
+        audio.loop = true; // Loop the music for continuity
+
+        // Falling Object (Heart or Bubble)
+        function createFallingObject() {
+            if (!heartsFalling) return; // Only fall after the box is touched
+
+            const fallingObject = document.createElement('div');
+            fallingObject.classList.add('falling-object');
+            fallingObject.innerText = '🎉'; // You can change this to any symbol or emoji
+            fallingObject.style.left = Math.random() * window.innerWidth + 'px';
+            document.body.appendChild(fallingObject);
+
+            // Remove falling object after animation
+            setTimeout(() => {
+                fallingObject.remove();
+            }, 3000);
+        }
+
+        // Touch Pop Effect
+        function createPopObject(event) {
+            const popObject = document.createElement('div');
+            popObject.classList.add('pop-object');
+            popObject.innerText = '☠️'; // Same heart symbol or any other emoji
+            popObject.style.left = event.clientX - 25 + 'px';  // Adjust for centering
+            popObject.style.top = event.clientY - 25 + 'px';  // Adjust for centering
+            document.body.appendChild(popObject);
+
+            // Remove pop object after animation
+            setTimeout(() => {
+                popObject.remove();
+            }, 500); // Remove pop object after animation
+        }
+
+        // Start Falling Objects (Hearts) 8 times more often
+        setInterval(createFallingObject, 125);  // 8 times faster (1 second / 8 = 125ms)
+
+        // Listen for touch events to trigger pop objects
+        document.addEventListener('click', createPopObject);
+
+        giftBox.addEventListener('click', () => {
+            // Start music
+            audio.play();
+
+            // Activate hearts falling
+            heartsFalling = true;
+
+            // Transition to Page 2
+            page1.classList.remove('active');
+            page2.classList.add('active');
+        });
+    </script>
+</body>
+</html>
